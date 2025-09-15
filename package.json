@@ -1,0 +1,37 @@
+{
+  "name": "towing_app",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "module": "type",
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "clean": "powershell -NoProfile -Command \"if (Test-Path dist) { Remove-Item -Recurse -Force dist }\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/nodemon": "^1.19.6",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.1",
+    "morgan": "^1.10.1",
+    "nodemon": "^3.1.10"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^5.0.3",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^22.7.4",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.2"
+  }
+}
