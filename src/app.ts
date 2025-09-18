@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import userRouter from './routes/user';
 
 dotenv.config();
 
@@ -18,6 +19,9 @@ app.use(helmet());
 app.use(cors({
     origin:process.env.FRONTEND_URL
 }));
+
+//routes
+app.use('/api/users', userRouter);
 
 
 export default app;
