@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { registerSchema, loginSchema } from "../utils/authValidate.";
+import { registerSchema, loginSchema } from "../utils/joiValidate";
 import generateJWT from "../utils/generateJWT";
 import userModel from "../models/user";
+import productModel from "../models/product";
 
 
 //register a new user
@@ -104,4 +105,19 @@ export const loginUser = async (req: Request, res: Response) => {
 
     //send response
     res.status(200).json({ message: 'login successful', token });
+}
+
+
+//get products
+export const getProducts = async (req: Request, res: Response) => {
+    const products = await productModel.find();
+
+    //check if products exist
+    if (!products || products.length === 0) {
+        res.status(400).json({ message: "No products Found" });
+        return;
+    }
+
+    //send response 
+    res.status(200).json({ products });
 }
