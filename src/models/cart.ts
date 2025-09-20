@@ -6,6 +6,7 @@ export interface IItem {
     name: string;
     quantity: number;
     price: number;
+    image: string;
 }
 
 //Cart type
@@ -22,7 +23,8 @@ const cartSchema = new Schema<ICart>({
         productId: { type: Schema.Types.ObjectId, required: true, ref: 'Product' },
         name: { type: String, required: true },
         quantity: { type: Number, required: true, default: 1 },
-        price:{type:Number , required:true},
+        price: { type: Number, required: true },
+        image: { type: String, required: true }
     }],
     totalPrice: { type: Number, required: true, default: 0 }
 },
