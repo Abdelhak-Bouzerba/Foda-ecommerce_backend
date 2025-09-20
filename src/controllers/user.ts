@@ -5,6 +5,7 @@ import generateJWT from "../utils/generateJWT";
 import userModel from "../models/user";
 import productModel from "../models/product";
 import cartModel from "../models/cart";
+import orderModel from "../models/order";
 
 
 //register a new user
@@ -248,4 +249,90 @@ export const removeFromCart = async (req: Request, res: Response) => {
 
     //send response
     res.status(200).json({ message: 'Item removed from cart successfully', cart });
+}
+
+
+//create Oredr from cart
+export const createOrderFromCart = async (req: Request, res: Response) => {
+    const userId = req.user?.id;
+    const { address, paymentMethod } = req.body;
+
+    //check if all fields are provided
+    if (!userId) {
+        res.status(400).json({ message: 'User id is required' });
+        return;
+    }
+
+    if (!address || !paymentMethod) {
+        res.status(400).json({ message: 'Address and payment method are required' });
+        return;
+    }
+
+    //check if cart exsit for the user
+    const cart = await cartModel.findOne({ userId });
+    if (!cart) {
+        res.status(400).json({ message: 'Cart does not exist for this user' });
+        return;
+    }
+
+    //check if cart is empty
+    if (cart.items.length === 0) {
+        res.status(400).json({ message: 'Cart is empty' });
+        return;
+    }
+
+    //check if stock is available for each item in the cart
+    for (const item of cart.items) {
+        const product = await productModel.findById(item.productId);
+        if (!product || product.stock < item.quantity) {
+            res.status(400).json({ message: `Insufficient stock for product ${item.name}` });
+            return;
+        }
+    }
+
+    //create Order
+    const newOrder = await orderModel.create({
+        userId,
+        items: cart.items,
+        address,
+        paymentMethod,
+        status: 'pending',
+        totalAmount: cart.totalPrice
+    });
+
+    //save new order to database
+    await newOrder.save();
+
+    //clear the cart
+    cart.items = [];
+    cart.totalPrice = 0;
+    await cart.save();
+
+    //send response 
+    res.status(201).json({ message: 'Order created successfully', order: newOrder });
+
+}
+
+
+//Get all user orders
+export const getUserOrders = async (req: Request, res: Response) => {
+    const userId = req.user?.id;
+
+    //check if all fields are provided
+    if (!userId) {
+        res.status(400).json({ message: 'User id is required' });
+        return;
+    }
+
+    //get user orders
+    const orders = await orderModel.find({ userId });
+
+    //check if orders exist
+    if (!orders || orders.length === 0) {
+        res.status(400).json({ message: "No orders Found" });
+        return;
+    }
+
+    //send response
+    res.status(200).json({ orders });
 }

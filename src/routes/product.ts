@@ -1,5 +1,5 @@
 import express from 'express';
-import { addProduct , updateProduct , deleteProduct } from '../controllers/admin';
+import { addProduct , updateProduct , deleteProduct } from '../controllers/product';
 import { validateJWT } from '../middlewares/validateJWT';
 import { requireRole } from '../middlewares/requireRole';
 import asyncHandler from 'express-async-handler';

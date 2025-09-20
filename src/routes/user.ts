@@ -1,9 +1,9 @@
 import express from 'express';
-import { registerUser, loginUser, getProducts, createCart, addToCart, removeFromCart } from '../controllers/user';
+import { registerUser, loginUser, getProducts, createCart, addToCart, removeFromCart, getUserOrders } from '../controllers/user';
 import asyncHandler from 'express-async-handler';
 import { validateJWT } from '../middlewares/validateJWT';
-import { upload } from '../middlewares/uploadImage';
 import { requireRole } from '../middlewares/requireRole';
+import { createOrderFromCart } from '../controllers/user';
 
 const router = express.Router();
 
@@ -41,6 +41,18 @@ router.post('/add-to-cart', validateJWT, requireRole('user'), asyncHandler(addTo
 //@route  POST /api/users/remove-from-cart
 //@access Private
 router.delete('/remove-from-cart', validateJWT, requireRole('user'), asyncHandler(removeFromCart));
+
+
+//@desc Create Order
+//@route  POST /api/users/create-order
+//@access Private
+router.post('/create-order', validateJWT, requireRole('user'), asyncHandler(createOrderFromCart));
+
+
+//@desc Get user orders
+//@route  GET /api/users/get-orders
+//@access Private
+router.get('/get-orders', validateJWT, requireRole('user'), asyncHandler(getUserOrders));
 
 
 

@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import productModel from "../models/product";
+import orderModel from "../models/order";
 import { addProductSchema, updateProductSchema } from "../utils/joiValidate";
 
 
-//Add a New Product
+//Add a New Product - Admin
 export const addProduct = async (req: Request, res: Response) => {
     const { name, price, stock, description, category } = req.body;
     const file = req.file;
@@ -54,7 +55,7 @@ export const addProduct = async (req: Request, res: Response) => {
 }
 
 
-//update Product
+//update Product - Admin
 export const updateProduct = async (req: Request, res: Response) => {
     const data = req.body;
     const productId = req.params.id;
@@ -99,7 +100,7 @@ export const updateProduct = async (req: Request, res: Response) => {
 }
 
 
-//delte Product
+//delete Product - Admin
 export const deleteProduct = async (req: Request, res: Response) => {
     const productId = req.params.id;
 

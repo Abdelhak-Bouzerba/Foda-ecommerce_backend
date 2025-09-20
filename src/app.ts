@@ -4,7 +4,8 @@ import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import userRouter from './routes/user';
-import adminRouter from './routes/admin';
+import productRouter from './routes/product';
+import orderRouter from './routes/order';
 import path from 'path';
 
 dotenv.config();
@@ -27,7 +28,7 @@ app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 //routes
 app.use('/api/users', userRouter);
-app.use('/api/products', adminRouter);
-
+app.use('/api/products', productRouter);
+app.use('/api/orders', orderRouter);
 
 export default app;
