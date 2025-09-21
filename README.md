@@ -1,4 +1,4 @@
-# Towing App Backend – TypeScript Setup
+# Foda e-commerce Backend – TypeScript Setup
 
 This project is configured to use TypeScript with a Node/Express backend.
 
@@ -10,8 +10,8 @@ This project is configured to use TypeScript with a Node/Express backend.
 
 ## Project structure
 ```
-src/
-  index.ts        # App entry point
+
+  server.ts        # App entry point
 
 dist/             # Build output (generated)
 tsconfig.json     # TypeScript config

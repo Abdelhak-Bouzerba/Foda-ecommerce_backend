@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import orderModel from "../models/order";
+import productModel from "../models/product";
 
 
 
@@ -25,6 +26,20 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
     order.status = status;
     await order.save();
 
+    //update product stock if order is delivered
+    if (status === 'delivred') {
+        for (const item of order.items) {
+            const product = await productModel.findById(item.productId);
+            if (product) {
+                product.stock -= item.quantity;
+                await product.save();
+            } else {
+                res.status(400).json({ message: `Product ${item.name} not found` });
+                return;
+            }
+        }
+    }
+
     //send response
     res.status(200).json({ message: `Order ${status} successfully`, order });
 
@@ -32,7 +47,7 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 
 
 //Get all Orders - Admin
-export const getAllOrders = async (req: Request, res: Response) => { 
+export const getAllOrders = async (req: Request, res: Response) => {
     const orders = await orderModel.find().populate('userId', 'username phoneNumber');
     res.status(200).json({ orders });
 }
