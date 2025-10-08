@@ -7,6 +7,7 @@ import userRouter from './routes/user';
 import productRouter from './routes/product';
 import orderRouter from './routes/order';
 import path from 'path';
+import errorHandler, { CustomError } from './middlewares/errorHandler';
 
 dotenv.config();
 
@@ -30,5 +31,9 @@ app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
 app.use('/api/orders', orderRouter);
+
+
+//error handling middleware
+app.use(errorHandler);
 
 export default app;
