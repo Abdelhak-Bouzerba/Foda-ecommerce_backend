@@ -17,12 +17,15 @@ const app = express();
 
 //middlewares
 app.use(express.json());
-app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(cors({
     origin: process.env.FRONTEND_URL
 }));
+
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+}
 
 // static files for uploaded images
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));

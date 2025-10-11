@@ -67,7 +67,19 @@ export const registerUser = async (req: Request, res: Response) => {
     const token = generateJWT({ id: newUser._id, username ,role:newUser.role});
 
     //send response 
-    res.status(201).json({ message: 'registred successfully', token });
+    res.status(201).json(
+        {
+            message: 'registred successfully',
+            newUser: {
+                id: newUser._id,
+                username: newUser.username,
+                email: newUser.email,
+                phoneNumber: newUser.phoneNumber,
+                role: newUser.role
+            },
+            token
+        }
+    );
 }
 
 
@@ -106,7 +118,18 @@ export const loginUser = async (req: Request, res: Response) => {
     const token = generateJWT({ id: existingUser._id, username: existingUser.username, role: existingUser.role });
 
     //send response
-    res.status(200).json({ message: 'login successful', token });
+    res.status(200).json(
+        {
+            message: 'login successful',
+            user: {
+                id: existingUser._id,
+                username: existingUser.username,
+                email: existingUser.email,
+                phoneNumber: existingUser.phoneNumber,
+                role: existingUser.role
+            },
+            token
+        });
 }
 
 
