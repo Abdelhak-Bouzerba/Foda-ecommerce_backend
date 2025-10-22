@@ -3,11 +3,12 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import authRouter from './routes/auth';
 import userRouter from './routes/user';
 import productRouter from './routes/product';
 import orderRouter from './routes/order';
 import path from 'path';
-import errorHandler, { CustomError } from './middlewares/errorHandler';
+import errorHandler from './middlewares/errorHandler';
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 //routes
+app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
 app.use('/api/orders', orderRouter);
