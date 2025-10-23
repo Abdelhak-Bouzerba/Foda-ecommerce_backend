@@ -2,6 +2,7 @@ import app from './src/app';
 import http from 'http';
 import { Server } from 'socket.io';
 import connectDb from './src/config/db';
+import "./src/events/user.events";
 
 //load port from .env file
 const port = process.env.PORT || 3000;
