@@ -1,5 +1,5 @@
 import express from 'express';
-import { getProducts, createCart, addToCart, removeFromCart, getUserOrders } from '../controllers/user';
+import { getProducts, createCart, addToCart, removeFromCart, getUserOrders, getProductsByCategory } from '../controllers/user';
 import asyncHandler from 'express-async-handler';
 import { validateJWT } from '../middlewares/validateJWT';
 import { requireRole } from '../middlewares/requireRole';
@@ -42,6 +42,12 @@ router.post('/create-order', validateJWT, requireRole('user'), asyncHandler(crea
 //@route  GET /api/users/get-orders
 //@access Private
 router.get('/get-orders', validateJWT, requireRole('user'), asyncHandler(getUserOrders));
+
+
+//@desc Get products by category
+//@route  GET /api/users/get-products?category=<category>
+//@access Public
+// router.get('/get-products?category=<category>', asyncHandler(getProductsByCategory));
 
 
 

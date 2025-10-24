@@ -237,3 +237,27 @@ export const getUserOrders = async (req: Request, res: Response) => {
   //send response
   res.status(200).json({ orders });
 };
+
+
+//Search for a specific Category of products
+export const getProductsByCategory = async (req: Request, res: Response) => {
+  const category = req.query.category;
+
+  //check if category is provided
+  if (!category) {
+    res.status(400).json({ message: "Category is required" });
+    return;
+  }
+
+  //get products by category
+  const products = await productModel.find({ category });
+
+  //check if products exist
+  if (!products || products.length === 0) {
+    res.status(400).json({ message: "No products Found in this category" });
+    return;
+  }
+
+  //send response
+  res.status(200).json({ products });
+}
