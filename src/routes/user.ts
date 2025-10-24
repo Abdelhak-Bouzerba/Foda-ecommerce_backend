@@ -45,9 +45,9 @@ router.get('/get-orders', validateJWT, requireRole('user'), asyncHandler(getUser
 
 
 //@desc Get products by category
-//@route  GET /api/users/get-products?category=<category>
+//@route  GET /api/users/get-products-by-category?category=<category>
 //@access Public
-// router.get('/get-products?category=<category>', asyncHandler(getProductsByCategory));
+router.get('/get-products-by-category', asyncHandler(getProductsByCategory));
 
 
 

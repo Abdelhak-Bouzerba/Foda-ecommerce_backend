@@ -239,9 +239,9 @@ export const getUserOrders = async (req: Request, res: Response) => {
 };
 
 
-//Search for a specific Category of products
+//Get products by category
 export const getProductsByCategory = async (req: Request, res: Response) => {
-  const category = req.query.category;
+  const { category } = req.query;
 
   //check if category is provided
   if (!category) {
