@@ -4,6 +4,7 @@ import asyncHandler from 'express-async-handler';
 import { validateJWT } from '../middlewares/validateJWT';
 import { requireRole } from '../middlewares/requireRole';
 import { createOrderFromCart } from '../controllers/user';
+import { generateNewAccessToken } from '../utils/generateJWT';
 
 const router = express.Router();
 

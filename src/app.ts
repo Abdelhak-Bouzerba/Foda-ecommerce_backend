@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import authRouter from './routes/auth';
 import userRouter from './routes/user';
 import productRouter from './routes/product';
@@ -19,9 +20,11 @@ const app = express();
 //middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(helmet());
 app.use(cors({
-    origin: process.env.FRONTEND_URL
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
 }));
 
 if (process.env.NODE_ENV === 'development') {
@@ -36,7 +39,6 @@ app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
 app.use('/api/orders', orderRouter);
-
 
 //error handling middleware
 app.use(errorHandler);

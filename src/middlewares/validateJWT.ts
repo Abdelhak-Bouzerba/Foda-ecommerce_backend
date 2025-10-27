@@ -21,23 +21,29 @@ export const validateJWT = (req: Request, res: Response, next: NextFunction) => 
         }
 
         //extract token from header
-        const token = authHeader.split(' ')[1];
-        if (!token) {
+        const accessToken = authHeader.split(' ')[1];
+        if (!accessToken) {
             res.status(401).json({ message: 'No token provided' });
             return;
         }
 
         //verify token
-        const secret = process.env.JWT_SECRET;
+        const secret = process.env.ACCESS_TOKEN_SECRET;
         if (!secret) {
             res.status(500).json({ message: 'Internal server error' });
             return;
         }
 
         //decode token and attach user to request object
-        const decoded = JWT.verify(token, secret);
-        req.user = decoded as IUser | JwtPayload;
-        next();
+        // const decoded = JWT.verify(token, secret);
+        // req.user = decoded as IUser | JwtPayload;
+        // next();
+
+        JWT.verify(accessToken, secret, (err, decoded) => {
+            if (err) return res.status(401).json({ message: 'Invalid token' });
+            req.user = decoded as IUser | JwtPayload;
+            next();
+        });
 
     } catch (error) {
         res.status(401).json({ message: 'Invalid token' });
