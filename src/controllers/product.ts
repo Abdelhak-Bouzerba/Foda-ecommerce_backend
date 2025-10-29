@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import productModel from "../models/product";
-import orderModel from "../models/order";
 import { addProductSchema, updateProductSchema } from "../utils/joiValidate";
 
 

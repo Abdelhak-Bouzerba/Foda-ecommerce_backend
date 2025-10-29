@@ -7,11 +7,6 @@ export const requireRole = (role: string) => {
             res.status(403).json({ message: 'forbidden' });
             return;
         }
-
-        if (!req.body.userId !== req.user.id) {
-            res.status(403).json({ message: 'forbidden' });
-            return;
-        }
         next();
     }
 }

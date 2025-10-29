@@ -4,13 +4,24 @@ import cartModel from "../models/cart";
 import orderModel from "../models/order";
 
 
-//get products
+//Get products with filters, sorting, and limit
 export const getProducts = async (req: Request, res: Response) => {
-  const products = await productModel.find();
+  const limit = parseInt(req.query.limit as string) || 5;
+  const sort = req.query.sort === 'asc' ? 1 : -1;
+  const price = parseFloat(req.query.price as string) || null;
+  const name = req.query.name as string || null;
+  const category = req.query.category as string || null;
 
-  //check if products exist
+  const products = await productModel.find()
+    .sort({ price: sort })
+    .where(price ? { price: price } : {})
+    .where(name ? { name: new RegExp(name, 'i') } : {})
+    .where(category ? { category: category } : {})
+    .limit(limit);
+
+  //check if products exsit
   if (!products || products.length === 0) {
-    res.status(400).json({ message: "No products Found" });
+    res.status(404).json({ message: "No products found" });
     return;
   }
 
@@ -261,3 +272,19 @@ export const getProductsByCategory = async (req: Request, res: Response) => {
   //send response
   res.status(200).json({ products });
 }
+
+
+
+//get products
+// export const getProducts = async (req: Request, res: Response) => {
+//   const products = await productModel.find();
+
+//   //check if products exist
+//   if (!products || products.length === 0) {
+//     res.status(400).json({ message: "No products Found" });
+//     return;
+//   }
+
+//   //send response
+//   res.status(200).json({ products });
+// };

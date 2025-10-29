@@ -4,7 +4,6 @@ import asyncHandler from 'express-async-handler';
 import { validateJWT } from '../middlewares/validateJWT';
 import { requireRole } from '../middlewares/requireRole';
 import { createOrderFromCart } from '../controllers/user';
-import { generateNewAccessToken } from '../utils/generateJWT';
 
 const router = express.Router();
 
@@ -49,8 +48,6 @@ router.get('/get-orders', validateJWT, requireRole('user'), asyncHandler(getUser
 //@route  GET /api/users/get-products-by-category?category=<category>
 //@access Public
 router.get('/get-products-by-category', asyncHandler(getProductsByCategory));
-
-
 
 
 export default router;
