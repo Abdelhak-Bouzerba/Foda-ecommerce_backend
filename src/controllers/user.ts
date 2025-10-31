@@ -6,18 +6,30 @@ import orderModel from "../models/order";
 
 //Get products with filters, sorting, and limit
 export const getProducts = async (req: Request, res: Response) => {
-  const limit = parseInt(req.query.limit as string) || 5;
-  const sort = req.query.sort === 'asc' ? 1 : -1;
-  const price = parseFloat(req.query.price as string) || null;
-  const name = req.query.name as string || null;
-  const category = req.query.category as string || null;
 
-  const products = await productModel.find()
-    .sort({ price: sort })
-    .where(price ? { price: price } : {})
-    .where(name ? { name: new RegExp(name, 'i') } : {})
-    .where(category ? { category: category } : {})
-    .limit(limit);
+  const { search, category } = req.query;
+
+  // const limit = parseInt(req.query.limit as string) || 5;
+  // const sort = req.query.sort === 'asc' ? 1 : -1;
+  // const price = parseFloat(req.query.price as string) || null;
+  // const name = req.query.name as string || null;
+  // const category = req.query.category as string || null;
+
+  const filter: any = {};
+  if (search) filter.$text = { $search: search };
+  if (category) filter.category = category;
+  const projection = search ? { score: { $meta: "textScore" } } : {};
+
+  const products = await productModel.find(filter, projection)
+    .sort(search ? { score: { $meta: "textScore" } } : {})
+    .limit(20);
+
+  // const products = await productModel.find()
+  //   .sort({ price: sort })
+  //   .where(price ? { price: price } : {})
+  //   .where(name ? { name: new RegExp(name, 'i') } : {})
+  //   .where(category ? { category: category } : {})
+  //   .limit(limit);
 
   //check if products exsit
   if (!products || products.length === 0) {

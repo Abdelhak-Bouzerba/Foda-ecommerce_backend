@@ -23,5 +23,8 @@ const productSchema = new Schema<IProduct>({
     timestamps: true
 });
 
+// Create text index for name and description to enhance search capabilities
+productSchema.index({ name: 'text', description: 'text' });
+
 const productModel = mongoose.model<IProduct>('Product', productSchema);
 export default productModel;
